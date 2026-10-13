@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+venv/
+.venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Concept Forge runtime
+.forge_cache/
+.forge_output/
+*.forge.lock
+generated_concepts/
+renders/*.png
+renders/*.psd
+
+# Model weights (pulled at runtime, never committed)
+models/weights/
+models/*.onnx
+models/*.safetensors
+models/*.gguf
+
+# Node / desktop shell
+node_modules/
+electron/dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local env
+.env
+.env.local
