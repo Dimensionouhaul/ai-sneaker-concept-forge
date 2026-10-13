@@ -1,0 +1,80 @@
+[build-system]
+requires = ["hatchling>=1.24", "hatch-vcs>=0.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-sneaker-concept-forge"
+version = "0.9.4"
+description = "Plugin-host desktop tool for generating AI sneaker and product concepts from prompt, palette, and silhouette seeds."
+readme = "docs/OVERVIEW.md"
+requires-python = ">=3.11,<3.14"
+license = { text = "MIT" }
+authors = [{ name = "forge-crew", email = "crew@forge.local" }]
+keywords = ["sneaker", "concept", "generative", "plugin-host", "footwear", "design"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: X11 Applications :: Qt",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Manufacturing",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Multimedia :: Graphics :: 3D Rendering",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+  "pydantic>=2.7,<3",
+  "PySide6>=6.7,<7",
+  "httpx>=0.27,<1",
+  "Pillow>=10.3,<12",
+  "numpy>=1.26,<3",
+  "structlog>=24.1,<25",
+  "PyYAML>=6.0,<7",
+  "typer>=0.12,<1",
+  "python-dotenv>=1.0,<2",
+  "platformdirs>=4.2,<5",
+]
+
+[project.optional-dependencies]
+gpu = ["onnxruntime-gpu>=1.18,<2"]
+cpu = ["onnxruntime>=1.18,<2"]
+dev = [
+  "pytest>=8.2,<9",
+  "pytest-asyncio>=0.23,<1",
+  "ruff>=0.5,<1",
+  "mypy>=1.10,<2",
+  "types-PyYAML",
+]
+
+[project.scripts]
+forge = "forge_host.__main__:main"
+forge-cli = "forge_host.bootstrap.cli:app"
+
+[project.entry-points."forge.plugins"]
+palette_diffusion = "forge_plugins.palette_diffusion:PaletteDiffusionPlugin"
+silhouette_gan = "forge_plugins.silhouette_gan:SilhouetteGanPlugin"
+material_sampler = "forge_plugins.material_sampler:MaterialSamplerPlugin"
+brand_voice = "forge_plugins.brand_voice:BrandVoicePlugin"
+
+[tool.hatch.build.targets.wheel]
+packages = ["forge_host", "forge_plugins", "forge_contracts"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["renders", "generated_concepts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "PL", "RUF"]
+ignore = ["PLR0913", "PLR2004"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["forge_plugins/_generated/"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
