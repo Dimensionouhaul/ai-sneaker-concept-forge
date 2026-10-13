@@ -1,0 +1,1 @@
+"""Pure host logic — no UI, no I/O beyond config files."""
